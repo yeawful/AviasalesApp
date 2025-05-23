@@ -1,52 +1,52 @@
 import './Ticket.scss';
 import S7Logo from '../../assets/img/S7Logo.svg';
 
-const Ticket: React.FC = () => {
+const Ticket = () => {
     return (
-        <section className="Ticket">
-        <div className="Ticket__header">
-            <span className="Ticket__price">13 400 Р</span>
-            <img 
-            className="Ticket__logo" 
-            src={S7Logo}
-            alt="Airline Logo" 
-            />
-        </div>
-
-        <div className="Ticket__info">
-            <div className="Ticket__row">
-            <div className="Ticket__column">
-                <div className="Ticket__cities">MOW – HKT</div>
-                <div className="Ticket__time">10:45 – 08:00</div>
-            </div>
-            <div className="Ticket__column">
-                <div className="Ticket__cities">HKT – MOW</div>
-                <div className="Ticket__time">11:20 – 00:50</div>
-            </div>
+        <section className="ticket">
+            <div className="ticket__header">
+                <span className="ticket__price">13 400 Р</span>
+                <img 
+                    className="ticket__logo" 
+                    src={S7Logo}
+                    alt="Airline Logo" 
+                />
             </div>
 
-            <div className="Ticket__row">
-            <div className="Ticket__column">
-                <div className="Ticket__way">В пути</div>
-                <div className="Ticket__timeLength">21ч 15м</div>
-            </div>
-            <div className="Ticket__column">
-                <div className="Ticket__way">В пути</div>
-                <div className="Ticket__timeLength">13ч 30м</div>
-            </div>
-            </div>
+            <div className="ticket__info">
+                <div className="ticket__row">
+                    <div className="ticket__column">
+                        <span className="ticket__cities">MOW – HKT</span>
+                        <span className="ticket__time">10:45 – 08:00</span>
+                    </div>
+                    <div className="ticket__column">
+                        <span className="ticket__cities">HKT – MOW</span>
+                        <span className="ticket__time">11:20 – 00:50</span>
+                    </div>
+                </div>
 
-            <div className="Ticket__row">
-            <div className="Ticket__column">
-                <div className="Ticket__stops-count">2 пересадки</div>
-                <div className="Ticket__stops-cities">HKG, JNB</div>
+                <div className="ticket__row">
+                    <div className="ticket__column">
+                        <span className="ticket__way">В пути</span>
+                        <span className="ticket__timeLength">21ч 15м</span>
+                    </div>
+                    <div className="ticket__column">
+                        <span className="ticket__way">В пути</span>
+                        <span className="ticket__timeLength">13ч 30м</span>
+                    </div>
+                </div>
+
+                <div className="ticket__row">
+                    <div className="ticket__column">
+                        <span className="ticket__stops-count">2 пересадки</span>
+                        <span className="ticket__stops-cities">HKG, JNB</span>
+                    </div>
+                    <div className="ticket__column">
+                        <span className="ticket__stops-count">1 пересадка</span>
+                        <span className="ticket__stops-cities">HKG</span>
+                    </div>
+                </div>
             </div>
-            <div className="Ticket__column">
-                <div className="Ticket__stops-count">1 пересадка</div>
-                <div className="Ticket__stops-cities">HKG</div>
-            </div>
-            </div>
-        </div>
         </section>
     );
 };

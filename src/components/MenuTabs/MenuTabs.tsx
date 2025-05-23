@@ -1,7 +1,7 @@
 import { Tabs } from 'antd';
-import './Tabs.scss';
+import './MenuTabs.scss';
 
-const CustomTabs: React.FC = () => {
+const MenuTabs = () => {
     const items = [
         { key: '1', label: 'Самый дешевый' },
         { key: '2', label: 'Самый быстрый' },
@@ -9,7 +9,7 @@ const CustomTabs: React.FC = () => {
     ];
 
     return (
-        <div className="Tabs">
+        <div className="tabs">
             <Tabs 
                 defaultActiveKey="1" 
                 items={items} 
@@ -19,4 +19,4 @@ const CustomTabs: React.FC = () => {
     );
 };
 
-export default CustomTabs;
+export default MenuTabs;

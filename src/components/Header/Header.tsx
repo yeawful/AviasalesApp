@@ -1,10 +1,10 @@
 import './Header.scss';
 import AviasalesLogo from '../../assets/img/Logo.svg'
 
-const Logo: React.FC = () => {
+const Header = () => {
     return (
-        <img src={AviasalesLogo} alt="Aviasales logo" className="Logo" />
+        <img src={AviasalesLogo} alt="Aviasales logo" className="logo" />
     );
 };
 
-export default Logo;
+export default Header;
