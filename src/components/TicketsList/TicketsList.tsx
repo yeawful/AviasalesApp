@@ -1,7 +1,7 @@
 import './TicketsList.scss';
 import Ticket from '../Ticket/Ticket';
 
-const TicketsList: React.FC = () => {
+const TicketsList = () => {
     return (
         <div className="TicketsList">
             <Ticket/>

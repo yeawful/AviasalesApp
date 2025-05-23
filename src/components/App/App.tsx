@@ -1,18 +1,18 @@
 import './App.scss';
 import Header from '../Header/Header';
 import Filter from '../Filter/Filter';
-import Tabs from '../Tabs/Tabs';
+import MenuTabs from '../MenuTabs/MenuTabs';
 import TicketsList from '../TicketsList/TicketsList';
 
 
-const App: React.FC = () => {
+const App = () => {
     return (
         <div className="container">
             <Header />
             <main className="main">
                 <Filter />
                 <article className="article">
-                    <Tabs />
+                    <MenuTabs />
                     <TicketsList />
                 </article>
             </main>
