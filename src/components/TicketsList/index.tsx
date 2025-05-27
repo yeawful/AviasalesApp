@@ -1,5 +1,5 @@
-import './TicketsList.scss';
-import Ticket from '../Ticket/Ticket';
+import './index.scss';
+import Ticket from '../Ticket';
 
 const TicketsList = () => {
     return (

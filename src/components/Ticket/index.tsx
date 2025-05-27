@@ -1,4 +1,4 @@
-import './Ticket.scss';
+import './index.scss';
 import S7Logo from '../../assets/img/S7Logo.svg';
 
 const Ticket = () => {

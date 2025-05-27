@@ -1,5 +1,5 @@
 import { Tabs } from 'antd';
-import './MenuTabs.scss';
+import './index.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import { setActiveTab } from '../../store/tabsSlice';

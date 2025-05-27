@@ -1,8 +1,8 @@
 import './App.scss';
-import Header from '../Header/Header';
-import Filter from '../Filter/Filter';
-import MenuTabs from '../MenuTabs/MenuTabs';
-import TicketsList from '../TicketsList/TicketsList';
+import Header from '../Header';
+import Filter from '../Filter';
+import MenuTabs from '../MenuTabs';
+import TicketsList from '../TicketsList';
 
 
 const App = () => {

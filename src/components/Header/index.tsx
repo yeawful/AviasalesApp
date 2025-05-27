@@ -1,4 +1,4 @@
-import './Header.scss';
+import './index.scss';
 import AviasalesLogo from '../../assets/img/Logo.svg'
 
 const Header = () => {
