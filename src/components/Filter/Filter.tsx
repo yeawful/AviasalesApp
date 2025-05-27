@@ -1,13 +1,19 @@
 import { Checkbox } from 'antd';
 import './Filter.scss';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
+import { toggleFilter } from '../../store/filtersSlice';
 
 const Filter = () => {
+    const dispatch = useDispatch();
+    const filterState = useSelector((state: RootState) => state.filter);
+
     const filterOptions = [
-        { label: 'Все' },
-        { label: 'Без пересадок' },
-        { label: '1 пересадка' },
-        { label: '2 пересадки' },
-        { label: '3 пересадки' },
+        { label: 'Все', key: 'all' },
+        { label: 'Без пересадок', key: 'noStops' },
+        { label: '1 пересадка', key: 'oneStop' },
+        { label: '2 пересадки', key: 'twoStops' },
+        { label: '3 пересадки', key: 'threeStops' },
     ];
 
     return (
@@ -15,7 +21,12 @@ const Filter = () => {
             <h3 className="filter__title">Количество пересадок</h3>
             {filterOptions.map((option) => (
                 <div key={option.label} className="filter__checkbox">
-                    <Checkbox>{option.label}</Checkbox>
+                    <Checkbox
+                        checked={filterState[option.key as keyof typeof filterState]}
+                        onChange={() => dispatch(toggleFilter({ option: option.key as keyof typeof filterState }))}
+                    >
+                        {option.label}
+                    </Checkbox>
                 </div>
             ))}
         </aside>

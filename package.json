@@ -14,10 +14,12 @@
         "type-check": "tsc --noEmit"
     },
     "dependencies": {
+        "@reduxjs/toolkit": "^2.8.2",
         "antd": "^5.25.2",
         "normalize.css": "^8.0.1",
         "react": "^19.0.0",
         "react-dom": "^19.0.0",
+        "react-redux": "^9.2.0",
         "vite-plugin-svgr": "^4.3.0"
     },
     "devDependencies": {

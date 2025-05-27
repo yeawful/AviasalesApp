@@ -1,18 +1,25 @@
 import { Tabs } from 'antd';
 import './MenuTabs.scss';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
+import { setActiveTab } from '../../store/tabsSlice';
 
 const MenuTabs = () => {
+    const dispatch = useDispatch();
+    const activeTab = useSelector((state: RootState) => state.tabs);
+
     const items = [
-        { key: '1', label: 'Самый дешевый' },
-        { key: '2', label: 'Самый быстрый' },
-        { key: '3', label: 'Оптимальный' },
+        { key: 'cheapest', label: 'Самый дешевый' },
+        { key: 'fastest', label: 'Самый быстрый' },
+        { key: 'optimal', label: 'Оптимальный' },
     ];
 
     return (
         <div className="tabs">
-            <Tabs 
-                defaultActiveKey="1" 
-                items={items} 
+            <Tabs
+                activeKey={activeTab}
+                onChange={(key) => dispatch(setActiveTab(key))}
+                items={items}
                 className="custom-ant-tabs"
             />
         </div>
