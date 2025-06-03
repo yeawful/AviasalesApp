@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Ticket } from '../api/ticketApi';
+import { ITicket } from '../common/types/ticket';
 import { fetchTickets } from '../api/ticketApi';
 
 interface TicketsState {
-    items: Ticket[];
+    items: ITicket[];
     status: 'idle' | 'loading' | 'succeeded' | 'failed';
     error: string | null;
 }
@@ -18,7 +18,7 @@ const ticketsSlice = createSlice({
     name: 'tickets',
     initialState,
     reducers: {
-        addTickets: (state, action: PayloadAction<Ticket[]>) => {
+        addTickets: (state, action: PayloadAction<ITicket[]>) => {
             const newTickets = action.payload.filter(newTicket => 
                 !state.items.some(existing => JSON.stringify(existing) === JSON.stringify(newTicket))
             );

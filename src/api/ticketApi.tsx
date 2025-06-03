@@ -1,30 +1,10 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AppDispatch, RootState } from '../store/store';
 import { addTickets } from '../store/ticketsSlice';
+import { ITicket } from '../common/types/ticket';
 
-export interface Ticket {
-    price: number;
-    carrier: string;
-    segments: [
-        {
-            origin: string;
-            destination: string;
-            date: string;
-            stops: string[];
-            duration: number;
-        },
-        {
-            origin: string;
-            destination: string;
-            date: string;
-            stops: string[];
-            duration: number;
-        }
-    ];
-}
-
-interface TicketsResponse {
-    tickets: Ticket[];
+interface ITicketsResponse {
+    tickets: ITicket[];
     stop: boolean;
 }
 
@@ -36,7 +16,7 @@ const fetchSearchId = async (): Promise<string> => {
     return data.searchId;
 };
 
-const fetchTicketsBatch = async (searchId: string): Promise<TicketsResponse> => {
+const fetchTicketsBatch = async (searchId: string): Promise<ITicketsResponse> => {
     const response = await fetch(`${BASE_URL}/tickets?searchId=${searchId}`);
     return await response.json();
 };

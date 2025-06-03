@@ -23,7 +23,9 @@ const TicketsList = () => {
             {tickets.slice(0, visibleTickets).map((ticket, index) => (
                 <Ticket 
                     key={`${ticket.price}-${ticket.carrier}-${ticket.segments[0].date}-${ticket.segments[1].date}-${index}`}
-                    ticket={ticket} 
+                    price={ticket.price}
+                    carrier={ticket.carrier}
+                    segments={ticket.segments}
                 />
             ))}
             
