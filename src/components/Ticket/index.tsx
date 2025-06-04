@@ -2,7 +2,7 @@ import './index.scss';
 import { formatPrice, formatTime, formatDuration, formatStops } from '../../utils/format';
 import { ITicket } from '../../common/types/ticket';
 
-interface ITicketProps extends Pick<ITicket, 'price' | 'carrier' | 'segments'> {}
+interface ITicketProps extends ITicket {}
 
 const Ticket = ({ price, carrier, segments }: ITicketProps) => {
     return (
