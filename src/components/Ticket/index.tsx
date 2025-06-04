@@ -1,6 +1,6 @@
 import './index.scss';
-import { formatPrice, formatTime, formatDuration, formatStops } from '../../utils/format';
 import { ITicket } from '../../common/types/ticket';
+import { formatPrice, formatTime, formatDuration, formatStops } from '../../utils/format';
 
 interface ITicketProps extends ITicket {}
 

@@ -1,10 +1,11 @@
+import { Empty, Progress } from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState, useMemo, useCallback } from 'react';
 import './index.scss';
 import Ticket from '../Ticket';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../store/store';
-import { useEffect, useState, useMemo, useCallback } from 'react';
 import { fetchTickets } from '../../api/ticketApi';
-import { Empty, Progress } from 'antd';
+import { AppDispatch, RootState } from '../../store/store';
+
 
 const TicketsList = () => {
     const dispatch = useDispatch<AppDispatch>();
