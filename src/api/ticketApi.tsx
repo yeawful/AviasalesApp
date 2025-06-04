@@ -38,9 +38,7 @@ export const fetchTickets = createAsyncThunk<void, void, { dispatch: AppDispatch
                         a.price === b.price &&
                         a.carrier === b.carrier &&
                         a.segments[0].date === b.segments[0].date &&
-                        a.segments[1].date === b.segments[1].date &&
-                        a.segments[0].duration === b.segments[0].duration &&
-                        a.segments[1].duration === b.segments[1].duration
+                        a.segments[1].date === b.segments[1].date
                     );
                 };
 
