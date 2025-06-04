@@ -1,13 +1,13 @@
 import './index.scss';
 import Ticket from '../Ticket';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../store/store';
+import { AppDispatch, RootState } from '../../store/store';
 import { useEffect, useState, useMemo, useCallback } from 'react';
 import { fetchTickets } from '../../api/ticketApi';
 import { Empty, Progress } from 'antd';
 
 const TicketsList = () => {
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
     const { items: tickets, status } = useSelector((state: RootState) => state.tickets);
     const filterState = useSelector((state: RootState) => state.filter);
     const activeTab = useSelector((state: RootState) => state.tabs);
