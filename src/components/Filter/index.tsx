@@ -1,6 +1,6 @@
 import { Checkbox } from 'antd';
-import './index.scss';
 import { useDispatch, useSelector } from 'react-redux';
+import './index.scss';
 import { RootState } from '../../store/store';
 import { toggleFilter } from '../../store/filtersSlice';
 

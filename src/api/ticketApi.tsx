@@ -21,25 +21,48 @@ const fetchTicketsBatch = async (searchId: string): Promise<ITicketsResponse> =>
     return await response.json();
 };
 
-export const fetchTickets = createAsyncThunk<Promise<void>, void, { dispatch: AppDispatch; state: RootState }>(
+export const fetchTickets = createAsyncThunk<void, void, { dispatch: AppDispatch; state: RootState }>(
     'tickets/fetchTickets',
-    async (_, { dispatch }) => {
+    async (_, { dispatch, getState }) => {
         const searchId = await fetchSearchId();
         let stop = false;
+        let attempts = 0;
+        const MAX_ATTEMPTS = 10;
 
-        while (!stop) {
+        while (!stop && attempts < MAX_ATTEMPTS) {
             try {
-                const { tickets, stop: batchStop } = await fetchTicketsBatch(searchId);
-                if (tickets.length > 0) {
-                    dispatch(addTickets(tickets));
+                const { tickets: newTickets, stop: batchStop } = await fetchTicketsBatch(searchId);
+                
+                const areTicketsEqual = (a: ITicket, b: ITicket) => {
+                    return (
+                        a.price === b.price &&
+                        a.carrier === b.carrier &&
+                        a.segments[0].date === b.segments[0].date &&
+                        a.segments[1].date === b.segments[1].date
+                    );
+                };
+
+                const existingTickets = getState().tickets.items;
+                const uniqueTickets = newTickets.filter(newTicket => 
+                    !existingTickets.some(existingTicket => 
+                        areTicketsEqual(existingTicket, newTicket)
+                ));
+
+                if (uniqueTickets.length > 0) {
+                    dispatch(addTickets(uniqueTickets));
                 }
+
                 stop = batchStop;
-            } catch (error) {
-                if (error instanceof Error && error.message.includes('500')) {
-                    await new Promise(resolve => setTimeout(resolve, 1000));
-                    continue;
+                
+                if (!stop) {
+                    await new Promise(resolve => setTimeout(resolve, 100));
                 }
-                throw error;
+            } catch (error) {
+                attempts++;
+                if (attempts >= MAX_ATTEMPTS) {
+                    throw new Error('Превышено количество попыток загрузки');
+                }
+                await new Promise(resolve => setTimeout(resolve, 1000));
             }
         }
     }
