@@ -9,6 +9,7 @@ interface ITicketsResponse {
 }
 
 const BASE_URL = 'https://aviasales-test-api.kata.academy';
+const MAX_TICKETS_LIMIT = 1000;
 
 const fetchSearchId = async (): Promise<string> => {
     const response = await fetch(`${BASE_URL}/search`);
@@ -26,14 +27,23 @@ export const fetchTickets = createAsyncThunk<Promise<void>, void, { dispatch: Ap
     async (_, { dispatch }) => {
         const searchId = await fetchSearchId();
         let stop = false;
+        let totalTicketsLoaded = 0;
 
-        while (!stop) {
+        while (!stop && totalTicketsLoaded < MAX_TICKETS_LIMIT) {
             try {
                 const { tickets, stop: batchStop } = await fetchTicketsBatch(searchId);
+                
                 if (tickets.length > 0) {
-                    dispatch(addTickets(tickets));
+                    const remainingTickets = MAX_TICKETS_LIMIT - totalTicketsLoaded;
+                    const ticketsToAdd = tickets.slice(0, remainingTickets);
+                    
+                    dispatch(addTickets(ticketsToAdd));
+                    totalTicketsLoaded += ticketsToAdd.length;
                 }
-                stop = batchStop;
+                
+                stop = batchStop || totalTicketsLoaded >= MAX_TICKETS_LIMIT;
+                
+                await new Promise(resolve => setTimeout(resolve, 300));
             } catch (error) {
                 if (error instanceof Error && error.message.includes('500')) {
                     await new Promise(resolve => setTimeout(resolve, 1000));
