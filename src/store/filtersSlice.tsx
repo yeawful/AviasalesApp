@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface FilterState {
+export interface FilterState {
     all: boolean;
     noStops: boolean;
     oneStop: boolean;
