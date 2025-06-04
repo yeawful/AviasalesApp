@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import { useEffect, useState, useMemo, useCallback } from 'react';
 import { fetchTickets } from '../../api/ticketApi';
-import { Empty, Spin, Progress } from 'antd';
+import { Empty, Progress } from 'antd';
 
 const TicketsList = () => {
     const dispatch = useDispatch();
@@ -123,14 +123,6 @@ const TicketsList = () => {
                     segments={ticket.segments}
                 />
             ))}
-            
-            {status === 'loading' && tickets.length === 0 ? (
-                <Spin tip="Загрузка первых билетов..." size="large" />
-            ) : status === 'loading' ? (
-                <div className="loading-more">
-                    <Spin tip="Загрузка дополнительных билетов..." size="default" />
-                </div>
-            ) : null}
         </div>
     );
 };
