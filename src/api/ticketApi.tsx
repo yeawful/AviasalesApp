@@ -9,7 +9,6 @@ interface ITicketsResponse {
 }
 
 const BASE_URL = 'https://aviasales-test-api.kata.academy';
-const MAX_TICKETS_LIMIT = 1000;
 
 const fetchSearchId = async (): Promise<string> => {
     const response = await fetch(`${BASE_URL}/search`);
@@ -22,34 +21,50 @@ const fetchTicketsBatch = async (searchId: string): Promise<ITicketsResponse> =>
     return await response.json();
 };
 
-export const fetchTickets = createAsyncThunk<Promise<void>, void, { dispatch: AppDispatch; state: RootState }>(
+export const fetchTickets = createAsyncThunk<void, void, { dispatch: AppDispatch; state: RootState }>(
     'tickets/fetchTickets',
-    async (_, { dispatch }) => {
+    async (_, { dispatch, getState }) => {
         const searchId = await fetchSearchId();
         let stop = false;
-        let totalTicketsLoaded = 0;
+        let attempts = 0;
+        const MAX_ATTEMPTS = 10;
 
-        while (!stop && totalTicketsLoaded < MAX_TICKETS_LIMIT) {
+        while (!stop && attempts < MAX_ATTEMPTS) {
             try {
-                const { tickets, stop: batchStop } = await fetchTicketsBatch(searchId);
+                const { tickets: newTickets, stop: batchStop } = await fetchTicketsBatch(searchId);
                 
-                if (tickets.length > 0) {
-                    const remainingTickets = MAX_TICKETS_LIMIT - totalTicketsLoaded;
-                    const ticketsToAdd = tickets.slice(0, remainingTickets);
-                    
-                    dispatch(addTickets(ticketsToAdd));
-                    totalTicketsLoaded += ticketsToAdd.length;
+                const areTicketsEqual = (a: ITicket, b: ITicket) => {
+                    return (
+                        a.price === b.price &&
+                        a.carrier === b.carrier &&
+                        a.segments[0].date === b.segments[0].date &&
+                        a.segments[1].date === b.segments[1].date &&
+                        a.segments[0].duration === b.segments[0].duration &&
+                        a.segments[1].duration === b.segments[1].duration
+                    );
+                };
+
+                const existingTickets = getState().tickets.items;
+                const uniqueTickets = newTickets.filter(newTicket => 
+                    !existingTickets.some(existingTicket => 
+                        areTicketsEqual(existingTicket, newTicket)
+                ));
+
+                if (uniqueTickets.length > 0) {
+                    dispatch(addTickets(uniqueTickets));
                 }
+
+                stop = batchStop;
                 
-                stop = batchStop || totalTicketsLoaded >= MAX_TICKETS_LIMIT;
-                
-                await new Promise(resolve => setTimeout(resolve, 300));
+                if (!stop) {
+                    await new Promise(resolve => setTimeout(resolve, 100));
+                }
             } catch (error) {
-                if (error instanceof Error && error.message.includes('500')) {
-                    await new Promise(resolve => setTimeout(resolve, 1000));
-                    continue;
+                attempts++;
+                if (attempts >= MAX_ATTEMPTS) {
+                    throw new Error('Превышено количество попыток загрузки');
                 }
-                throw error;
+                await new Promise(resolve => setTimeout(resolve, 1000));
             }
         }
     }

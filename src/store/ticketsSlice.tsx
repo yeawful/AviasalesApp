@@ -19,24 +19,20 @@ const ticketsSlice = createSlice({
     initialState,
     reducers: {
         addTickets: (state, action: PayloadAction<ITicket[]>) => {
-            const newTickets = action.payload.filter(newTicket => 
-                !state.items.some(existing => JSON.stringify(existing) === JSON.stringify(newTicket))
-            );
-            state.items.push(...newTickets);
+            state.items = [...state.items, ...action.payload];
         },
     },
     extraReducers: (builder) => {
         builder
             .addCase(fetchTickets.pending, (state) => {
                 state.status = 'loading';
-                state.error = null;
             })
             .addCase(fetchTickets.fulfilled, (state) => {
                 state.status = 'succeeded';
             })
             .addCase(fetchTickets.rejected, (state, action) => {
                 state.status = 'failed';
-                state.error = action.error.message ?? 'Произошла ошибка при загрузке билетов';
+                state.error = action.error.message ?? 'Ошибка загрузки';
             });
     },
 });
