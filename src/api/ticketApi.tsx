@@ -21,48 +21,37 @@ const fetchTicketsBatch = async (searchId: string): Promise<ITicketsResponse> =>
     return await response.json();
 };
 
+const areTicketsEqual = (a: ITicket, b: ITicket) => 
+    a.price === b.price && a.carrier === b.carrier;
+
 export const fetchTickets = createAsyncThunk<void, void, { dispatch: AppDispatch; state: RootState }>(
     'tickets/fetchTickets',
     async (_, { dispatch, getState }) => {
         const searchId = await fetchSearchId();
-        let stop = false;
-        let attempts = 0;
-        const MAX_ATTEMPTS = 10;
 
-        while (!stop && attempts < MAX_ATTEMPTS) {
+        let stop = false;
+
+        while (!stop) {
             try {
                 const { tickets: newTickets, stop: batchStop } = await fetchTicketsBatch(searchId);
                 
-                const areTicketsEqual = (a: ITicket, b: ITicket) => {
-                    return (
-                        a.price === b.price &&
-                        a.carrier === b.carrier &&
-                        a.segments[0].date === b.segments[0].date &&
-                        a.segments[1].date === b.segments[1].date
-                    );
-                };
-
                 const existingTickets = getState().tickets.items;
+                
                 const uniqueTickets = newTickets.filter(newTicket => 
                     !existingTickets.some(existingTicket => 
                         areTicketsEqual(existingTicket, newTicket)
-                ));
+                    ));
 
                 if (uniqueTickets.length > 0) {
                     dispatch(addTickets(uniqueTickets));
                 }
 
                 stop = batchStop;
-                
-                if (!stop) {
-                    await new Promise(resolve => setTimeout(resolve, 100));
-                }
             } catch (error) {
-                attempts++;
-                if (attempts >= MAX_ATTEMPTS) {
-                    throw new Error('Превышено количество попыток загрузки');
+                if (error instanceof Error && error.message.includes('500')) {
+                    continue;
                 }
-                await new Promise(resolve => setTimeout(resolve, 1000));
+                throw error;
             }
         }
     }
