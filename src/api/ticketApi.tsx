@@ -21,22 +21,34 @@ const fetchTicketsBatch = async (searchId: string): Promise<ITicketsResponse> =>
     return await response.json();
 };
 
-export const fetchTickets = createAsyncThunk<Promise<void>, void, { dispatch: AppDispatch; state: RootState }>(
+const areTicketsEqual = (a: ITicket, b: ITicket) => 
+    a.price === b.price && a.carrier === b.carrier;
+
+export const fetchTickets = createAsyncThunk<void, void, { dispatch: AppDispatch; state: RootState }>(
     'tickets/fetchTickets',
-    async (_, { dispatch }) => {
+    async (_, { dispatch, getState }) => {
         const searchId = await fetchSearchId();
+
         let stop = false;
 
         while (!stop) {
             try {
-                const { tickets, stop: batchStop } = await fetchTicketsBatch(searchId);
-                if (tickets.length > 0) {
-                    dispatch(addTickets(tickets));
+                const { tickets: newTickets, stop: batchStop } = await fetchTicketsBatch(searchId);
+                
+                const existingTickets = getState().tickets.items;
+                
+                const uniqueTickets = newTickets.filter(newTicket => 
+                    !existingTickets.some(existingTicket => 
+                        areTicketsEqual(existingTicket, newTicket)
+                    ));
+
+                if (uniqueTickets.length > 0) {
+                    dispatch(addTickets(uniqueTickets));
                 }
+
                 stop = batchStop;
             } catch (error) {
                 if (error instanceof Error && error.message.includes('500')) {
-                    await new Promise(resolve => setTimeout(resolve, 1000));
                     continue;
                 }
                 throw error;
