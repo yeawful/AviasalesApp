@@ -23,12 +23,12 @@ const TicketsList = () => {
     const { visibleCount } = useInfiniteScroll(sortedTickets.length);
     const loadingIndicator = useLoadingIndicator(
         status === 'loading',
-        (tickets.length / 100) * 100
+        (tickets.length / 100) * 100,
     );
     const emptyState = useEmptyState(
         sortedTickets.length === 0,
         isAnyFilterSelected,
-        status === 'loading'
+        status === 'loading',
     );
 
     useEffect(() => {
@@ -42,7 +42,7 @@ const TicketsList = () => {
     return (
         <div className="TicketsList">
             {loadingIndicator}
-            
+
             {sortedTickets.slice(0, visibleCount).map((ticket, index) => (
                 <Ticket
                     key={generateTicketKey(ticket, index)}

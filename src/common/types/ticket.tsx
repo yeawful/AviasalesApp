@@ -15,6 +15,6 @@ export interface ITicket {
             date: string;
             stops: string[];
             duration: number;
-        }
+        },
     ];
 }

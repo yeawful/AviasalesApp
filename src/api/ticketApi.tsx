@@ -21,38 +21,40 @@ const fetchTicketsBatch = async (searchId: string): Promise<ITicketsResponse> =>
     return await response.json();
 };
 
-const areTicketsEqual = (a: ITicket, b: ITicket) => 
-    a.price === b.price && a.carrier === b.carrier;
+const areTicketsEqual = (a: ITicket, b: ITicket) => a.price === b.price && a.carrier === b.carrier;
 
-export const fetchTickets = createAsyncThunk<void, void, { dispatch: AppDispatch; state: RootState }>(
-    'tickets/fetchTickets',
-    async (_, { dispatch, getState }) => {
-        const searchId = await fetchSearchId();
+export const fetchTickets = createAsyncThunk<
+    void,
+    void,
+    { dispatch: AppDispatch; state: RootState }
+>('tickets/fetchTickets', async (_, { dispatch, getState }) => {
+    const searchId = await fetchSearchId();
 
-        let stop = false;
+    let stop = false;
 
-        while (!stop) {
-            try {
-                const { tickets: newTickets, stop: batchStop } = await fetchTicketsBatch(searchId);
-                
-                const existingTickets = getState().tickets.items;
-                
-                const uniqueTickets = newTickets.filter(newTicket => 
-                    !existingTickets.some(existingTicket => 
-                        areTicketsEqual(existingTicket, newTicket)
-                    ));
+    while (!stop) {
+        try {
+            const { tickets: newTickets, stop: batchStop } = await fetchTicketsBatch(searchId);
 
-                if (uniqueTickets.length > 0) {
-                    dispatch(addTickets(uniqueTickets));
-                }
+            const existingTickets = getState().tickets.items;
 
-                stop = batchStop;
-            } catch (error) {
-                if (error instanceof Error && error.message.includes('500')) {
-                    continue;
-                }
-                throw error;
+            const uniqueTickets = newTickets.filter(
+                (newTicket) =>
+                    !existingTickets.some((existingTicket) =>
+                        areTicketsEqual(existingTicket, newTicket),
+                    ),
+            );
+
+            if (uniqueTickets.length > 0) {
+                dispatch(addTickets(uniqueTickets));
             }
+
+            stop = batchStop;
+        } catch (error) {
+            if (error instanceof Error && error.message.includes('500')) {
+                continue;
+            }
+            throw error;
         }
     }
-);
+});

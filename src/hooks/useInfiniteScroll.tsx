@@ -7,7 +7,7 @@ export const useInfiniteScroll = (totalItems: number, step = 5) => {
     const loadMore = useCallback(() => {
         if (visibleCount < totalItems && !isFetching) {
             setIsFetching(true);
-            setVisibleCount(prev => prev + step);
+            setVisibleCount((prev) => prev + step);
             setIsFetching(false);
         }
     }, [visibleCount, totalItems, isFetching, step]);

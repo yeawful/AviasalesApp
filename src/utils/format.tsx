@@ -5,11 +5,11 @@ export const formatPrice = (price: number) => {
 export const formatTime = (date: string, duration: number) => {
     const departure = new Date(date);
     const arrival = new Date(departure.getTime() + duration * 60000);
-    
+
     const formatTime = (date: Date) => {
         return date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
     };
-    
+
     return `${formatTime(departure)} – ${formatTime(arrival)}`;
 };
 
