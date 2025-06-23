@@ -4,7 +4,7 @@ import { ReactNode } from 'react';
 export const useEmptyState = (
     isEmpty: boolean,
     isFiltersSelected: boolean,
-    isLoading: boolean
+    isLoading: boolean,
 ): ReactNode | null => {
     if (!isFiltersSelected) {
         return <Empty description="Рейсов, подходящих под заданные фильтры, не найдено" />;

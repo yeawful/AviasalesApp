@@ -4,7 +4,6 @@ import Filter from '../Filter';
 import MenuTabs from '../MenuTabs';
 import TicketsList from '../TicketsList';
 
-
 const App = () => {
     return (
         <div className="container">

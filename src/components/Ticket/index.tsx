@@ -2,17 +2,15 @@ import './index.scss';
 import { ITicket } from '../../common/types/ticket';
 import { formatPrice, formatTime, formatDuration, formatStops } from '../../utils/format';
 
-interface ITicketProps extends ITicket {}
-
-const Ticket = ({ price, carrier, segments }: ITicketProps) => {
+const Ticket = ({ price, carrier, segments }: ITicket) => {
     return (
         <section className="ticket">
             <div className="ticket__header">
                 <span className="ticket__price">{formatPrice(price)}</span>
-                <img 
-                    className="ticket__logo" 
+                <img
+                    className="ticket__logo"
                     src={`//pics.avs.io/99/36/${carrier}.png`}
-                    alt="Airline Logo" 
+                    alt="Airline Logo"
                 />
             </div>
 
@@ -20,8 +18,12 @@ const Ticket = ({ price, carrier, segments }: ITicketProps) => {
                 <div className="ticket__row">
                     {segments.map((segment, index) => (
                         <div key={`cities-${index}`} className="ticket__column">
-                            <span className="ticket__cities">{segment.origin} – {segment.destination}</span>
-                            <span className="ticket__time">{formatTime(segment.date, segment.duration)}</span>
+                            <span className="ticket__cities">
+                                {segment.origin} – {segment.destination}
+                            </span>
+                            <span className="ticket__time">
+                                {formatTime(segment.date, segment.duration)}
+                            </span>
                         </div>
                     ))}
                 </div>
@@ -30,7 +32,9 @@ const Ticket = ({ price, carrier, segments }: ITicketProps) => {
                     {segments.map((segment, index) => (
                         <div key={`duration-${index}`} className="ticket__column">
                             <span className="ticket__way">В пути</span>
-                            <span className="ticket__timeLength">{formatDuration(segment.duration)}</span>
+                            <span className="ticket__timeLength">
+                                {formatDuration(segment.duration)}
+                            </span>
                         </div>
                     ))}
                 </div>
@@ -38,7 +42,9 @@ const Ticket = ({ price, carrier, segments }: ITicketProps) => {
                 <div className="ticket__row">
                     {segments.map((segment, index) => (
                         <div key={`stops-${index}`} className="ticket__column">
-                            <span className="ticket__stops-count">{formatStops(segment.stops)}</span>
+                            <span className="ticket__stops-count">
+                                {formatStops(segment.stops)}
+                            </span>
                             <span className="ticket__stops-cities">{segment.stops.join(', ')}</span>
                         </div>
                     ))}

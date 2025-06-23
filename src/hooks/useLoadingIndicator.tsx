@@ -1,10 +1,7 @@
 import { Progress } from 'antd';
 import { ReactNode } from 'react';
 
-export const useLoadingIndicator = (
-    isLoading: boolean,
-    progress: number
-): ReactNode => {
+export const useLoadingIndicator = (isLoading: boolean, progress: number): ReactNode => {
     if (!isLoading) return null;
 
     return (
